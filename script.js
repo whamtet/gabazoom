@@ -1,5 +1,5 @@
 const editor = document.getElementById('editor');
-const saved = sessionStorage.getItem('editor');
+const saved = localStorage.getItem('editor');
 
 const defaultText = `
 ❌ Mistake
@@ -61,6 +61,20 @@ const replaceLast = (s, a, b) => {
     return prefix + b + split[split.length - 1];
 }
 
+const maxIndexOf = (s, a) => {
+    const index = s.indexOf(a);
+    if (index == -1) {
+        return -1;
+    }
+    const restOfString = s.substring(index + a.length);
+    const subsequentIndex = maxIndexOf(restOfString, a);
+    if (subsequentIndex > -1) {
+        return subsequentIndex + index + a.length;
+    } else {
+        return index;
+    }
+}
+
 function newSection() {
   const v = splitLast(editor.value, '***').replaceAll('ß', '').trim();
 
@@ -74,7 +88,7 @@ function newSection() {
       }
   }
 
-  const sectionIndices = sections.map(section => v.indexOf(section));
+  const sectionIndices = sections.map(section => maxIndexOf(v, section));
   sectionIndices.push(0);
   const maxIndex = Math.max.apply(Math, sectionIndices);
   const v2 = v.substring(maxIndex); // only check last section
@@ -109,6 +123,6 @@ editor.addEventListener('keydown', (event) => {
     }
   }
 
-  sessionStorage.setItem('editor', event.target.value);
+  localStorage.setItem('editor', event.target.value);
 
 });
