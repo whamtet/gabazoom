@@ -1,3 +1,11 @@
+const range1 = x => {
+    const out = [];
+    for (let i = 1; i <= x; i++) {
+        out.push(i);
+    }
+    return out;
+}
+
 const editor = document.getElementById('editor');
 const saved = localStorage.getItem('editor');
 
@@ -38,13 +46,18 @@ function newCorrection() {
 ⭕`;
 }
 
-const sections = [
+const sectionsDefault = [
     '-- Warm Up --',
     '-- Target Language --',
     '-- Practice A --',
     '-- Practice B --',
     '-- Practice C --',
     '-- Application --',
+];
+
+const sectionsReview = [
+    '-- Warm Up --',
+    ...(range1(20).map (x => `-- Scene ${x} --`))
 ];
 
 const splitLast = (s, t) => {
@@ -75,8 +88,20 @@ const maxIndexOf = (s, a) => {
     }
 }
 
+function getUnit() {
+    const lines = editor.value.split('\n');
+    for (let i = lines.length - 1; i > 0; i--) {
+        const line = lines[i];
+        if (line.startsWith('***')) {
+            return lines[i - 1];
+        }
+    }
+    return '';
+}
+
 function newSection() {
   const v = splitLast(editor.value, '***').replaceAll('ß', '').trim();
+  const sections = getUnit().toLowerCase().trim() == 'review' ? sectionsReview : sectionsDefault;
 
   // when ending with a section replace with next
   for (let i = 0; i < sections.length - 1; i++) {
