@@ -23,8 +23,7 @@ function newUnit() {
   if (title) {
     const displayRow = ` ${title.trim()} `;
     const line = Array.from(displayRow).map(_ => '*').join('');
-    editor.value = `${editor.value}
-${line}
+    editor.value = `${editor.value}${line}
 ${displayRow}
 ${line}
 
@@ -35,14 +34,12 @@ ${line}
 function newWord() {
   const word = prompt('New Word');
   if (word) {
-    editor.value = `${editor.value}
-🟦 ${word} 🔊[] = `;
+    editor.value = `${editor.value}🟦 ${word} 🔊[] = `;
   }
 }
 
 function newCorrection() {
-  editor.value = `${editor.value}
-❌
+  editor.value = `${editor.value}❌
 ⭕`;
 }
 
