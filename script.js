@@ -57,11 +57,6 @@ const sectionsReview = [
     ...(range1(20).map (x => `-- Scene ${x} --`))
 ];
 
-const splitLast = (s, t) => {
-    const split = s.split(t);
-    return split[split.length - 1];
-}
-
 const replaceLast = (s, a, b) => {
     const split = s.split(a);
     if (split.length < 3) {
@@ -96,8 +91,19 @@ function getUnit() {
     return '';
 }
 
+function getLastSection() {
+  const lines = editor.value.split('\n');
+    for (let i = lines.length - 1; i > 0; i--) {
+        const line = lines[i];
+        if (line.startsWith('***')) {
+            return lines.slice(i + 1).join('\n');
+        }
+    }
+    return '';
+}
+
 function newSection() {
-  const v = splitLast(editor.value, '***').replaceAll('ß', '').trim();
+  const v = getLastSection().replaceAll('ß', '').trim();
   const sections = getUnit().toLowerCase().trim() == 'review' ? sectionsReview : sectionsDefault;
 
   // when ending with a section replace with next
