@@ -92,14 +92,14 @@ function getUnit() {
 }
 
 function getLastSection() {
-  const lines = editor.value.split('\n');
-    for (let i = lines.length - 1; i > 0; i--) {
+    const lines = editor.value.split('\n');
+    for (let i = lines.length - 1; i >= 0; i--) {
         const line = lines[i];
         if (line.startsWith('***')) {
             return lines.slice(i + 1).join('\n');
         }
     }
-    return '';
+    return editor.value;
 }
 
 function newSection() {
