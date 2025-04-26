@@ -18,6 +18,17 @@ const defaultText = `
 
 editor.value = saved || defaultText;
 
+function insertAtCursor (s) {
+  if (editor.selectionStart) {
+    const before = editor.value.substring(0, editor.selectionStart);
+    const after = editor.value.substring(editor.selectionStart);
+
+    editor.value = before + s + after;
+  } else {
+    editor.value += s;
+  }
+}
+
 function newUnit() {
   const title = prompt('New Unit');
   if (title) {
@@ -34,7 +45,7 @@ ${line}
 function newWord() {
   const word = prompt('New Word');
   if (word) {
-    editor.value = `${editor.value}🟦 ${word} 🔊[] = `;
+    insertAtCursor(`🟦 ${word} 🔊[] = `);
   }
 }
 
