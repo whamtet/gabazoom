@@ -50,8 +50,8 @@ function newWord() {
 }
 
 function newCorrection() {
-  editor.value = `${editor.value}❌
-⭕`;
+  insertAtCursor(`❌
+⭕`);
 }
 
 const sectionsDefault = [
